@@ -1,4 +1,5 @@
 import MapView from './components/MapView'
+import RouteSearch from './components/RouteSearch'
 
 const points = [
   {
@@ -21,48 +22,6 @@ const points = [
   },
 ]
 
-function SearchPanel() {
-  function handleSubmit(event) {
-    event.preventDefault()
-  }
-
-return (
-  <section className="search-panel" aria-labelledby="search-panel-title">
-    <div className="search-panel-heading">
-      <p className="section-kicker">Search your route</p>
-        <h2 id="search-panel-title">Search Panel</h2>
-    </div>
-
-      <form className="search-form" onSubmit={handleSubmit}>
-        <label className="search-field">
-          <span>Start</span>
-          <input
-            type="text"
-            name="start"
-            placeholder="Enter a starting address"
-            autoComplete="street-address"
-          />
-        </label>
-
-        <label className="search-field">
-          <span>Destination</span>
-          <input
-            type="text"
-            name="destination"
-            placeholder="Enter a destination"
-            autoComplete="street-address"
-          />
-        </label>
-
-        <button type="submit" className="search-button">
-          Search
-        </button>
-      </form>
-
-                                                                                                                                                                                                                                        
-    </section>
-  )
-}
 
   function App() {
     return (
@@ -80,7 +39,7 @@ return (
         </header>
 
         <main className="app-layout">
-          <SearchPanel />
+          <RouteSearch />
           <MapView points={points} />
         </main>
       </div>
