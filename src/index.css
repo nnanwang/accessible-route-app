@@ -1,384 +1,579 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
-/* CSS reset and global styles */
+/* Define the global font, text color, background, and rendering defaults. */
 :root {
   font-family:
-    "DM Sans",
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
-  color: #173b36;
-  background: #f4f8f7;
+  color: #193936;
+  background: #f7fbfa;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --teal: #13b8a2;
-  --teal-dark: #087b6d;
-  --mint: #d9f4ef;
-  --purple: #9b4dff;
-  --purple-soft: #f1e7ff;
-  --ink: #173b36;
-  --muted: #687a77;
-  --line: #cfe3df;
 }
 
+/* Make declared widths include padding and borders for predictable layouts. */
 * {
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
-  min-width: 320px;
-  min-height: 100%;
-  margin: 0;
-}
-
+/* Remove the browser margin and make the page fill the viewport. */
 body {
+  margin: 0;
+  min-width: 320px;
   min-height: 100vh;
-  overflow: hidden;
 }
 
-button {
+/* Make form controls use the same font as the rest of the application. */
+button,
+input {
   font: inherit;
 }
 
-.app-shell {
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: 70px minmax(0, 1fr);
-  background: #f7faf9;
-}
-
-.topbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 20px;
-  background: #ffffff;
-  border-bottom: 1px solid var(--line);
-  box-shadow: 0 4px 20px rgba(20, 74, 65, 0.08);
-}
-
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
-  border-radius: 12px;
-  color: #ffffff;
-  background: linear-gradient(135deg, var(--purple), var(--teal));
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-}
-
-.brand-copy {
-  min-width: 0;
-}
-
-.brand-copy h1 {
-  margin: 0;
-  font-size: 1.05rem;
-  line-height: 1.2;
-}
-
-.brand-copy p {
-  margin: 3px 0 0;
-  color: var(--muted);
-  font-size: 0.76rem;
-}
-
-.demo-pill,
-.lesson-badge {
-  padding: 6px 10px;
-  border: 1px solid #ceb5f4;
-  border-radius: 999px;
-  color: #6f2ec7;
-  background: #f8f2ff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.demo-pill {
-  margin-left: auto;
-}
-
-.app-layout {
-  min-height: 0;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: 18px;
-  padding: 18px;
-}
-
-.search-panel {
-  display: grid;
-  grid-template-columns: minmax(150px, 0.65fr) minmax(280px, 1.6fr) auto;
-  align-items: center;
-  gap: 20px;
-  min-height: 82px;
-  padding: 16px 20px;
-  border: 1px solid #bde6df;
-  border-radius: 16px;
-  background: var(--mint);
-  box-shadow: 0 8px 24px rgba(23, 90, 79, 0.08);
-}
-
-.section-kicker {
-  margin: 0 0 4px;
-  color: var(--teal-dark);
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.search-panel h2,
-.map-heading h2 {
-  margin: 0;
-  font-size: 1rem;
-  letter-spacing: -0.01em;
-}
-
-.search-placeholder {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  min-height: 46px;
-  padding: 0 16px;
-  border: 1px solid #9dd8cf;
-  border-radius: 12px;
-  color: #5f706d;
-  background: rgba(255, 255, 255, 0.75);
-  font-size: 0.86rem;
-}
-
-.search-placeholder span:last-child {
-  text-align: right;
-}
-
-.search-arrow {
-  padding: 0 18px;
-  color: var(--purple);
-  font-weight: 800;
-}
-
-.map-panel {
-  position: relative;
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
-  border: 1px solid #9dd8cf;
-  border-radius: 18px;
-  background: #d9eee9;
-  box-shadow: 0 12px 30px rgba(20, 74, 65, 0.12);
-}
-
-.map-heading {
-  position: absolute;
-  z-index: 4;
-  top: 16px;
-  left: 16px;
-  display: flex;
-  align-items: center;
-  gap: 26px;
-  padding: 12px 14px;
-  border: 1px solid rgba(207, 227, 223, 0.95);
-  border-radius: 13px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 8px 22px rgba(27, 68, 60, 0.15);
-  backdrop-filter: blur(8px);
-}
-
-.map-key {
-  color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 600;
-}
-
-.map {
-  width: 100%;
-  height: 100%;
-  min-height: 420px;
-}
-
-.map-marker {
-  width: 23px;
-  height: 23px;
-  padding: 0;
-  border: 3px solid #ffffff;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-  box-shadow: 0 4px 10px rgba(23, 55, 50, 0.34);
+/* Show a pointer cursor so buttons look interactive. */
+button {
   cursor: pointer;
 }
 
-.map-marker:focus-visible {
-  outline: 3px solid #ffb08e;
-  outline-offset: 3px;
+/* Stack the application header and main content vertically. */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.map-popup {
+/* Build the teal course header with brand, title, and lesson badge. */
+.topbar {
+  min-height: 78px;
   display: grid;
-  gap: 4px;
-  min-width: 150px;
-  color: var(--ink);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 24px;
+  color: #ffffff;
+  background: #0e8076;
+  box-shadow: 0 3px 16px rgb(14 71 66 / 18%);
 }
 
-.map-popup span {
-  color: var(--muted);
-  font-size: 0.74rem;
+/* Style the compact AM brand mark. */
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  color: #0e8076;
+  background: #d8f5ef;
+  font-weight: 900;
 }
 
-@media (max-width: 760px) {
-  body {
-    overflow: auto;
-  }
-
-  .app-shell {
-    grid-template-rows: 62px auto;
-  }
-
-  .brand-copy p,
-  .demo-pill,
-  .lesson-badge {
-    display: none;
-  }
-
-  .app-layout {
-    min-height: calc(100vh - 62px);
-    padding: 12px;
-    gap: 12px;
-  }
-
-  .search-panel {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 14px;
-  }
-
-  .map-panel {
-    height: 65vh;
-    min-height: 420px;
-  }
-
-  .map-heading {
-    top: 12px;
-    left: 12px;
-  }
-
-  .map-key {
-    display: none;
-  }
+/* Keep the main page title readable without making it oversized. */
+.topbar h1 {
+  margin: 1px 0 0;
+  font-size: clamp(1.12rem, 2vw, 1.55rem);
+  line-height: 1.15;
 }
 
-/* Class 2: the search controls demonstrate UI structure only. */
-.search-panel {
-  grid-template-columns: minmax(190px, 0.7fr) minmax(0, 2fr) auto;
-}
-
-.search-panel-heading {
-  min-width: 0;
-}
-
-.search-panel-note {
-  max-width: 240px;
-  margin: 5px 0 0;
-  color: var(--muted);
+/* Style small uppercase labels used throughout the interface. */
+.eyebrow {
+  margin: 0;
+  color: #8f42ed;
   font-size: 0.7rem;
-  line-height: 1.35;
+  font-weight: 900;
+  letter-spacing: 0.11em;
 }
 
+/* Adjust the eyebrow color when it appears on the teal header. */
+.topbar .eyebrow {
+  color: #aef3e7;
+}
+
+/* Style the short lesson description under the main title. */
+.subtitle {
+  margin: 3px 0 0;
+  color: #d4f4ef;
+  font-size: 0.83rem;
+}
+
+/* Style the rounded live-demo label in the header. */
+.class-pill {
+  padding: 8px 12px;
+  border: 1px solid rgb(255 255 255 / 28%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 12%);
+  font-size: 0.76rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Arrange the search panel above a map that fills the remaining space. */
+.app-layout {
+  flex: 1;
+  display: grid;
+  grid-template-rows: auto minmax(420px, 1fr);
+  gap: 16px;
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Create the mint search card and its two-column desktop layout. */
+.search-panel {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 2fr);
+  gap: 16px 24px;
+  padding: 18px 20px;
+  border: 1px solid #cfece7;
+  border-radius: 16px;
+  background: #eaf8f5;
+  box-shadow: 0 8px 24px rgb(35 95 87 / 8%);
+}
+
+/* Keep headings in the search panel and map visually consistent. */
+.panel-intro h2,
+.map-card-header h2 {
+  margin: 3px 0 5px;
+  color: #0d746c;
+  font-size: 1.08rem;
+}
+
+/* Limit the intro paragraph width for comfortable reading. */
+.panel-intro > p:last-child {
+  max-width: 36ch;
+  margin: 0;
+  color: #58706d;
+  font-size: 0.83rem;
+  line-height: 1.45;
+}
+
+/* Place the two inputs and submit button in one responsive row. */
 .search-form {
   display: grid;
-  grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr) auto;
+  grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) auto;
   align-items: end;
   gap: 10px;
 }
 
+/* Position each suggestion dropdown relative to its own input. */
 .search-field {
-  display: grid;
-  gap: 5px;
+  position: relative;
   min-width: 0;
-  color: var(--teal-dark);
-  font-size: 0.68rem;
-  font-weight: 700;
 }
 
+/* Style the visible label above each input. */
+.search-field label {
+  display: block;
+  margin-bottom: 6px;
+  color: #345c58;
+  font-size: 0.75rem;
+  font-weight: 850;
+}
+
+/* Style the controlled address inputs. */
 .search-field input {
   width: 100%;
-  min-height: 44px;
-  padding: 0 13px;
-  border: 1px solid #9dd8cf;
-  border-radius: 11px;
-  color: var(--ink);
-  background: rgba(255, 255, 255, 0.88);
-  font: inherit;
-  font-size: 0.82rem;
-  font-weight: 500;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #b7dcd6;
+  border-radius: 10px;
   outline: none;
+  color: #193936;
+  background: #ffffff;
   transition:
     border-color 160ms ease,
     box-shadow 160ms ease;
 }
 
-.search-field input::placeholder {
-  color: #7b8d89;
-}
-
+/* Make keyboard focus easy to see on each input. */
 .search-field input:focus {
-  border-color: var(--purple);
-  box-shadow: 0 0 0 3px rgba(155, 77, 255, 0.14);
+  border-color: #8f42ed;
+  box-shadow: 0 0 0 3px rgb(143 66 237 / 14%);
 }
 
+/* CLASS 4: Make disabled inputs visibly unavailable during loading. */
+.search-field input:disabled {
+  cursor: wait;
+  color: #718783;
+  background: #f2f7f6;
+  opacity: 0.78;
+}
+
+/* Style the main purple route-search button. */
 .search-button {
-  min-height: 44px;
-  padding: 0 20px;
+  min-width: 126px;
+  height: 44px;
+  padding: 0 17px;
   border: 0;
-  border-radius: 11px;
+  border-radius: 10px;
   color: #ffffff;
-  background: var(--purple);
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 5px 12px rgba(111, 46, 199, 0.2);
+  background: #8f42ed;
+  font-weight: 850;
+  box-shadow: 0 6px 14px rgb(143 66 237 / 23%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-.search-button:hover {
-  background: #7f35db;
+/* Darken the active button when a pointer hovers over it. */
+.search-button:hover:not(:disabled) {
+  background: #7934cc;
 }
 
-.search-button:focus-visible {
-  outline: 3px solid rgba(155, 77, 255, 0.28);
-  outline-offset: 2px;
+/* Communicate the loading state while the route request runs. */
+.search-button:disabled {
+  cursor: wait;
+  opacity: 0.68;
 }
 
-@media (max-width: 960px) {
-  .search-panel {
-    grid-template-columns: 1fr auto;
+/* Float the suggestion list directly below its input. */
+.suggestions-panel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  right: 0;
+  left: 0;
+  max-height: 248px;
+  overflow: auto;
+  border: 1px solid #cfe1de;
+  border-radius: 11px;
+  background: #ffffff;
+  box-shadow: 0 14px 32px rgb(19 66 60 / 18%);
+}
+
+/* Style the temporary address-loading message. */
+.suggestion-status {
+  margin: 0;
+  padding: 14px;
+  color: #607773;
+  font-size: 0.82rem;
+}
+
+/* Remove default list styles from the suggestion results. */
+.suggestions-list {
+  padding: 5px;
+  margin: 0;
+  list-style: none;
+}
+
+/* Separate adjacent address suggestions with subtle dividers. */
+.suggestions-list li + li {
+  border-top: 1px solid #edf3f2;
+}
+
+/* Make each suggestion a full-width accessible button. */
+.suggestions-list button {
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-radius: 7px;
+  text-align: left;
+  color: #244a46;
+  background: transparent;
+}
+
+/* Highlight suggestions for both pointer and keyboard users. */
+.suggestions-list button:hover,
+.suggestions-list button:focus-visible {
+  background: #eef9f7;
+}
+
+/* Put the address and coordinates on separate lines. */
+.suggestions-list span,
+.suggestions-list small {
+  display: block;
+}
+
+/* Keep long addresses inside the dropdown width. */
+.suggestions-list span {
+  overflow: hidden;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+/* Use quieter text for the suggestion coordinates. */
+.suggestions-list small {
+  margin-top: 3px;
+  color: #7a8d8a;
+  font-size: 0.68rem;
+}
+
+/* Make status content span the full search-panel content column. */
+.route-summary,
+.request-status,
+.demo-note {
+  grid-column: 1 / -1;
+}
+
+/* Arrange the distance, duration, and coordinate results in one row. */
+.route-summary {
+  display: grid;
+  grid-template-columns: 150px 150px minmax(0, 1fr);
+  gap: 10px;
+}
+
+/* Give every route result group a consistent card treatment. */
+.route-metric,
+.coordinate-summary {
+  padding: 10px 12px;
+  border: 1px solid #d8e6e3;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+/* Stack each route metric label above its value. */
+.route-metric span,
+.route-metric strong {
+  display: block;
+}
+
+/* Style the smaller label for each route metric. */
+.route-metric span {
+  color: #657975;
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+/* Emphasize the route metric value. */
+.route-metric strong {
+  margin-top: 2px;
+  color: #0d746c;
+  font-size: 1.08rem;
+}
+
+/* Let both coordinate labels wrap naturally in the available space. */
+.coordinate-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 18px;
+  color: #5d736f;
+  font-size: 0.72rem;
+}
+
+/* Emphasize the coordinate labels without overpowering their values. */
+.coordinate-summary b {
+  color: #324e4b;
+}
+
+/* ==================== CLASS 4: REQUEST FEEDBACK ==================== */
+/* Give loading and error messages the same easy-to-scan structure. */
+.request-status {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0;
+  padding: 11px 13px;
+  border: 1px solid;
+  border-radius: 10px;
+}
+
+/* Stack each feedback heading above its supporting explanation. */
+.request-status div,
+.request-status strong,
+.request-status span {
+  min-width: 0;
+}
+
+/* Make the feedback heading visually stronger than its explanation. */
+.request-status strong,
+.request-status div > span {
+  display: block;
+}
+
+/* Keep the supporting explanation compact and readable. */
+.request-status div > span {
+  margin-top: 2px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+/* CLASS 4 LOADING: Use teal styling for an in-progress request. */
+.request-status-loading {
+  color: #0d746c;
+  background: #e5f8f4;
+  border-color: #a9ded5;
+}
+
+/* CLASS 4 ERROR: Use red styling for a failed request. */
+.request-status-error {
+  color: #9a2f3d;
+  background: #fff0f2;
+  border-color: #f2bdc5;
+}
+
+/* Draw a compact circular error symbol without an external icon library. */
+.error-icon {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: #c84659;
+  font-weight: 900;
+}
+
+/* CLASS 4 LOADING: Draw a spinner that communicates ongoing work. */
+.loading-spinner {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgb(255 255 255 / 45%);
+  border-top-color: currentcolor;
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+/* Use a darker spinner track inside the light loading status card. */
+.request-status-loading .loading-spinner {
+  border-color: rgb(13 116 108 / 20%);
+  border-top-color: #0d746c;
+}
+
+/* Rotate the loading spinner continuously until the request finishes. */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-
-  .search-form {
-    grid-column: 1 / -1;
-  }
-
-  .search-panel-note {
-    max-width: none;
-  }
 }
 
-@media (max-width: 760px) {
+/* Style the quiet provider note shown before the first route. */
+.demo-note {
+  margin: 0;
+  color: #718783;
+  font-size: 0.7rem;
+}
+
+/* Build the card that contains the MapLibre header and canvas. */
+.map-card {
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  border: 1px solid #dce9e7;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgb(35 95 87 / 10%);
+}
+
+/* Arrange the map title and interaction hint on one line. */
+.map-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 16px;
+  border-bottom: 1px solid #e2ecea;
+}
+
+/* Remove extra space below the map title. */
+.map-card-header h2 {
+  margin-bottom: 0;
+}
+
+/* Style the small interaction hint on the right. */
+.map-card-header > span {
+  color: #708480;
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+/* Give the MapLibre container enough height to render correctly. */
+.map {
+  min-height: 400px;
+}
+
+/* Draw each custom marker as a colored map pin. */
+.map-marker {
+  width: 24px;
+  height: 30px;
+  border: 3px solid #ffffff;
+  border-radius: 13px 13px 13px 3px;
+  background: var(--marker-color);
+  box-shadow: 0 4px 10px rgb(31 62 58 / 30%);
+  transform: rotate(-45deg);
+}
+
+/* Add the white center dot inside each marker. */
+.map-marker::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+/* Give keyboard-focused markers a strong visible outline. */
+.map-marker:focus-visible {
+  outline: 3px solid #202020;
+  outline-offset: 3px;
+}
+
+/* Match MapLibre popups to the application's visual language. */
+.maplibregl-popup-content {
+  max-width: 260px;
+  border-radius: 10px;
+  color: #244a46;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+/* Use quieter text for coordinates inside map popups. */
+.maplibregl-popup-content span {
+  color: #687c79;
+  font-size: 0.75rem;
+}
+
+/* Stack search-panel columns on medium-width screens. */
+@media (max-width: 920px) {
   .search-panel {
     grid-template-columns: 1fr;
   }
 
-  .search-form {
+  .panel-intro > p:last-child {
+    max-width: none;
+  }
+}
+
+/* Simplify the header, form, results, and map on small screens. */
+@media (max-width: 720px) {
+  .topbar {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 12px 16px;
+  }
+
+  .class-pill {
+    display: none;
+  }
+
+  .app-layout {
+    grid-template-rows: auto auto;
+    padding: 12px;
+  }
+
+  .search-form,
+  .route-summary {
     grid-template-columns: 1fr;
   }
 
   .search-button {
     width: 100%;
+  }
+
+  .map-card {
+    min-height: 60vh;
+  }
+
+  .map-card-header {
+    align-items: flex-start;
+  }
+
+  .map-card-header > span {
+    display: none;
   }
 }
