@@ -5,21 +5,18 @@ import RouteSearch from './components/RouteSearch'
 // Store the example markers shown before the user generates a route.
 const points = [
   {
-    // Give React and MapLibre a stable identifier for this marker.
     id: 'grand-central',
     name: 'Grand Central Terminal',
     coordinates: [-73.9772, 40.7527],
     color: '#9b4dff',
   },
   {
-    // Give this marker its own stable identifier.
     id: 'bryant-park',
     name: 'Bryant Park',
     coordinates: [-73.9832, 40.7536],
     color: '#13b8a2',
   },
   {
-    // Give this marker its own stable identifier.
     id: 'empire-state',
     name: 'Empire State Building',
     coordinates: [-73.9857, 40.7484],
@@ -28,8 +25,10 @@ const points = [
 ]
 
 function App() {
+  // Save the route returned by RouteSearch so MapView can draw it.
   const [route, setRoute] = useState(null)
 
+  // Return the page structure that React renders in the browser.
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -39,12 +38,12 @@ function App() {
 
         <div>
           <p className="eyebrow">ACCESSIBLE MAP STUDIO</p>
-          <h1>Location Search &amp; Route Generation</h1>
+          <h1>Route Evaluation Framework</h1>
           <p className="subtitle">
-            Class 4 · Loading states and error handling
+            Class 5 · OpenStreetMap accessibility data and Overpass API
           </p>
         </div>
-        <span className="class-pill">Class 4 update</span>
+        <span className="class-pill">Class 5 update</span>
       </header>
 
       <main className="app-layout">

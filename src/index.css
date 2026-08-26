@@ -19,6 +19,13 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Let React and the main application use the complete browser viewport. */
+#root {
+  width: 100%;
+  height: 100vh;
 }
 
 /* Make form controls use the same font as the rest of the application. */
@@ -34,13 +41,18 @@ button {
 
 /* Stack the application header and main content vertically. */
 .app-shell {
-  min-height: 100vh;
+  height: 100vh;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 /* Build the teal course header with brand, title, and lesson badge. */
 .topbar {
+  position: relative;
+  z-index: 50;
+  flex: 0 0 auto;
   min-height: 78px;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -103,29 +115,33 @@ button {
   white-space: nowrap;
 }
 
-/* Arrange the search panel above a map that fills the remaining space. */
+/* Use the complete remaining viewport as one layered map workspace. */
 .app-layout {
+  position: relative;
   flex: 1;
-  display: grid;
-  grid-template-rows: auto minmax(420px, 1fr);
-  gap: 16px;
-  width: min(1440px, 100%);
-  margin: 0 auto;
-  padding: 16px;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
-/* Create the mint search card and its two-column desktop layout. */
+/* Float the search workflow above the upper-left area of the map. */
 .search-panel {
-  position: relative;
-  z-index: 5;
+  position: absolute;
+  z-index: 30;
+  top: 18px;
+  left: 18px;
+  width: min(430px, calc(100% - 36px));
+  max-height: 42vh;
+  overflow-y: auto;
   display: grid;
-  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 2fr);
-  gap: 16px 24px;
-  padding: 18px 20px;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  padding: 16px;
   border: 1px solid #cfece7;
   border-radius: 16px;
-  background: #eaf8f5;
-  box-shadow: 0 8px 24px rgb(35 95 87 / 8%);
+  background: rgb(234 248 245 / 96%);
+  box-shadow: 0 16px 40px rgb(24 67 61 / 22%);
+  backdrop-filter: blur(12px);
 }
 
 /* Keep headings in the search panel and map visually consistent. */
@@ -145,11 +161,15 @@ button {
   line-height: 1.45;
 }
 
+/* Keep the floating search overlay compact; the labels already explain it. */
+.search-panel .panel-intro > p:last-child {
+  display: none;
+}
+
 /* Place the two inputs and submit button in one responsive row. */
 .search-form {
   display: grid;
-  grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) auto;
-  align-items: end;
+  grid-template-columns: 1fr;
   gap: 10px;
 }
 
@@ -308,8 +328,13 @@ button {
 /* Arrange the distance, duration, and coordinate results in one row. */
 .route-summary {
   display: grid;
-  grid-template-columns: 150px 150px minmax(0, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
+}
+
+/* Give the long coordinate result the complete overlay width. */
+.coordinate-summary {
+  grid-column: 1 / -1;
 }
 
 /* Give every route result group a consistent card treatment. */
@@ -446,26 +471,394 @@ button {
   font-size: 0.7rem;
 }
 
-/* Build the card that contains the MapLibre header and canvas. */
+/* Make MapLibre fill the complete layered workspace. */
 .map-card {
-  min-height: 0;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  border: 1px solid #dce9e7;
-  border-radius: 16px;
+  border: 0;
+  border-radius: 0;
   background: #ffffff;
-  box-shadow: 0 10px 28px rgb(35 95 87 / 10%);
+  box-shadow: none;
 }
 
-/* Arrange the map title and interaction hint on one line. */
+/* ==================== CLASS 5: OSM ACCESSIBILITY LAYER ==================== */
+/* Float map and OSM information as a tall sidebar on the map's right edge. */
+.map-information-panel {
+  position: absolute;
+  z-index: 20;
+  top: 18px;
+  right: 18px;
+  width: min(380px, calc(100% - 36px));
+  max-height: calc(100% - 36px);
+  overflow-y: auto;
+  padding: 18px;
+  border: 1px solid rgb(190 221 215 / 90%);
+  border-radius: 15px;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 16px 40px rgb(24 67 61 / 22%);
+  backdrop-filter: blur(12px);
+}
+
+/* Stack the OSM explanation, vertical legend, and query status. */
+.accessibility-panel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding-top: 13px;
+  margin-top: 10px;
+  border-top: 1px solid #e2ecea;
+}
+
+/* Keep the short OpenStreetMap explanation compact and readable. */
+.accessibility-intro > p:last-child {
+  max-width: 48ch;
+  margin: 3px 0 0;
+  color: #5c7470;
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+/* Give every facility type its own complete row for easier scanning. */
+.accessibility-legend {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Let every category button use the complete legend cell. */
+.accessibility-legend li {
+  min-width: 0;
+}
+
+/* Place the legend heading and reset action on one compact line. */
+.facility-filter-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #46625e;
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+/* Style the reset action as a quiet secondary control. */
+.show-all-facilities {
+  padding: 4px 8px;
+  border: 1px solid #b9dcd6;
+  border-radius: 7px;
+  color: #0d746c;
+  background: #f2fbf9;
+  font-size: 0.64rem;
+  font-weight: 850;
+}
+
+/* Keep the disabled reset control visible without suggesting it is active. */
+.show-all-facilities:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+/* Make every legend entry a full-width, keyboard-accessible filter. */
+.facility-filter {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: #46625e;
+  background: transparent;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+/* Show pointer and keyboard users which facility type can be selected. */
+.facility-filter:hover,
+.facility-filter:focus-visible {
+  border-color: #badfd8;
+  background: #f0faf8;
+  outline: none;
+}
+
+/* Keep the chosen facility type visually connected to its map highlight. */
+.facility-filter.is-active {
+  border-color: #9f67e8;
+  color: #5d269f;
+  background: #f4ecff;
+  box-shadow: 0 0 0 2px rgb(143 66 237 / 10%);
+}
+
+/* Present the number of matching facilities as compact metadata. */
+.facility-count {
+  min-width: 20px;
+  padding: 2px 5px;
+  border-radius: 999px;
+  color: #536d69;
+  background: #e8f1ef;
+  text-align: center;
+  font-size: 0.64rem;
+}
+
+/* Reuse MapLibre category colors in the visible legend. */
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: var(--legend-color);
+  box-shadow: 0 0 0 1px rgb(42 76 71 / 18%);
+}
+
+/* Present the current Overpass request state as a compact pill. */
+.accessibility-query-status {
+  max-width: none;
+  padding: 7px 10px;
+  border: 1px solid #cfe3df;
+  border-radius: 9px;
+  color: #53716c;
+  background: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+/* Reuse Class 4's loading visual language for the Overpass request. */
+.accessibility-query-status.status-loading {
+  color: #0d746c;
+  border-color: #a9ded5;
+  background: #e5f8f4;
+}
+
+/* Highlight a completed query without making it look like an error. */
+.accessibility-query-status.status-success {
+  color: #39685f;
+  border-color: #b9ddd5;
+  background: #edf9f6;
+}
+
+/* Make an Overpass failure easy to distinguish and find. */
+.accessibility-query-status.status-error {
+  color: #9a2f3d;
+  border-color: #f2bdc5;
+  background: #fff0f2;
+}
+
+/* Explain the currently highlighted subset below the query result. */
+.facility-filter-summary {
+  margin: -5px 0 0;
+  color: #6631aa;
+  font-size: 0.65rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+/* Stack the accessible name, category, and raw tag inside facility popups. */
+.accessibility-popup strong,
+.accessibility-popup span,
+.accessibility-popup small {
+  display: block;
+}
+
+/* Emphasize the normalized category below the feature name. */
+.accessibility-popup span {
+  margin-top: 3px;
+  color: #0d746c;
+  font-weight: 800;
+}
+
+/* Show the original wheelchair tag as quieter supporting data. */
+.accessibility-popup small {
+  margin-top: 4px;
+  color: #687c79;
+}
+
+/* ==================== CLASS 5: FACILITY DETAIL SECTION =================== */
+/* Append selected-marker details to the bottom of the right MapView sidebar. */
+.facility-detail-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #dbe9e6;
+  color: #294a46;
+}
+
+/* Keep the sidebar image readable without making the detail section too tall. */
+.facility-detail-section .facility-detail-image,
+.facility-detail-section .facility-image-placeholder {
+  width: 100%;
+  height: 148px;
+  min-height: 148px;
+  margin-top: 12px;
+}
+
+/* Keep the selected facility title and close action on the same row. */
+.facility-detail-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+/* Use a readable card title that does not compete with the app heading. */
+.facility-detail-header h2 {
+  margin: 4px 0 0;
+  color: #173f3a;
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+/* Style the detail close action consistently with the map overlay control. */
+.facility-detail-close {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #d6e5e2;
+  border-radius: 9px;
+  color: #365e59;
+  background: #f4faf8;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+/* Make the detail close control clear for hover and keyboard focus. */
+.facility-detail-close:hover,
+.facility-detail-close:focus-visible {
+  color: #ffffff;
+  background: #0e8076;
+}
+
+/* Display a supplied OSM image at a consistent, useful size. */
+.facility-detail-image {
+  width: 100%;
+  height: 148px;
+  display: block;
+  margin-top: 14px;
+  border-radius: 11px;
+  object-fit: cover;
+  background: #e6f1ef;
+}
+
+/* Provide an honest visual state when the selected OSM feature has no image. */
+.facility-image-placeholder {
+  min-height: 132px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px dashed #b9dcd6;
+  border-radius: 11px;
+  color: #496b66;
+  background: linear-gradient(135deg, #e5f7f3, #f4ecff);
+  text-align: center;
+}
+
+/* Draw a simple image symbol without adding another asset dependency. */
+.facility-image-placeholder > span {
+  color: #8f42ed;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+/* Keep the placeholder's teaching note subtle. */
+.facility-image-placeholder small {
+  color: #708480;
+  font-size: 0.68rem;
+}
+
+/* Reuse the selected facility color in its readable category badge. */
+.facility-category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 13px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  color: #294a46;
+  background: #edf5f3;
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+/* Draw the category's map color directly inside the detail badge. */
+.facility-category-badge::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--facility-color);
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+/* Keep the OSM description comfortable to read inside the compact card. */
+.facility-description {
+  margin: 12px 0;
+  color: #506b67;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* Remove the default description-list spacing before defining detail rows. */
+.facility-detail-list {
+  margin: 0;
+}
+
+/* Align detail labels and values in a stable two-column structure. */
+.facility-detail-list > div {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid #e6efed;
+  font-size: 0.74rem;
+}
+
+/* Distinguish the field labels from contributed OSM values. */
+.facility-detail-list dt {
+  color: #708480;
+  font-weight: 750;
+}
+
+/* Let long contributed values wrap safely inside the card. */
+.facility-detail-list dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #294a46;
+}
+
+/* Style the source link as the final action in the detail card. */
+.facility-osm-link {
+  display: inline-flex;
+  margin-top: 11px;
+  color: #6e2bbd;
+  font-size: 0.74rem;
+  font-weight: 850;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+/* ========================================================================== */
+/* ========================================================================== */
+
+/* Arrange the floating map title and close button on one line. */
 .map-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 11px 16px;
-  border-bottom: 1px solid #e2ecea;
+  padding: 0;
 }
 
 /* Remove extra space below the map title. */
@@ -474,15 +867,59 @@ button {
 }
 
 /* Style the small interaction hint on the right. */
-.map-card-header > span {
+.map-interaction-hint {
+  margin: 5px 0 0;
   color: #708480;
   font-size: 0.72rem;
   font-weight: 750;
 }
 
+/* Style the compact control that closes the floating information panel. */
+.map-information-close {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #d6e5e2;
+  border-radius: 9px;
+  color: #365e59;
+  background: #f4faf8;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+/* Highlight the close control for pointer and keyboard users. */
+.map-information-close:hover,
+.map-information-close:focus-visible {
+  color: #ffffff;
+  background: #0e8076;
+}
+
+/* Keep a small reopening control after the main overlay is closed. */
+.map-information-open {
+  position: absolute;
+  z-index: 20;
+  bottom: 18px;
+  right: 18px;
+  padding: 10px 14px;
+  border: 1px solid #b9dcd6;
+  border-radius: 10px;
+  color: #ffffff;
+  background: #0e8076;
+  box-shadow: 0 10px 28px rgb(24 67 61 / 24%);
+  font-size: 0.76rem;
+  font-weight: 850;
+}
+
 /* Give the MapLibre container enough height to render correctly. */
 .map {
-  min-height: 400px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
 }
 
 /* Draw each custom marker as a colored map pin. */
@@ -531,12 +968,13 @@ button {
 
 /* Stack search-panel columns on medium-width screens. */
 @media (max-width: 920px) {
-  .search-panel {
-    grid-template-columns: 1fr;
-  }
-
   .panel-intro > p:last-child {
     max-width: none;
+  }
+
+  /* Keep both left and right overlays comfortable on smaller laptops. */
+  .map-information-panel {
+    width: min(340px, calc(100% - 36px));
   }
 }
 
@@ -552,13 +990,16 @@ button {
   }
 
   .app-layout {
-    grid-template-rows: auto auto;
-    padding: 12px;
+    padding: 0;
   }
 
-  .search-form,
-  .route-summary {
-    grid-template-columns: 1fr;
+  /* Keep the search overlay usable without covering the complete map. */
+  .search-panel {
+    top: 10px;
+    left: 10px;
+    width: calc(100% - 20px);
+    max-height: 48vh;
+    padding: 13px;
   }
 
   .search-button {
@@ -566,14 +1007,35 @@ button {
   }
 
   .map-card {
-    min-height: 60vh;
+    min-height: 0;
   }
 
-  .map-card-header {
-    align-items: flex-start;
+  /* Anchor the collapsible information panel below the search overlay. */
+  .map-information-panel {
+    top: auto;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    width: auto;
+    max-height: 38vh;
+    padding: 13px;
   }
 
-  .map-card-header > span {
-    display: none;
+  /* Keep the reopening control aligned with the mobile panel edge. */
+  .map-information-open {
+    right: 10px;
+    bottom: 10px;
+  }
+
+  /* Use one column when accessibility labels become too narrow. */
+  .accessibility-legend {
+    grid-template-columns: 1fr;
+  }
+
+  /* Keep selected facility media compact inside the mobile sidebar. */
+  .facility-detail-section .facility-detail-image,
+  .facility-detail-section .facility-image-placeholder {
+    height: 126px;
+    min-height: 126px;
   }
 }
