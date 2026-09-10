@@ -1,12 +1,19 @@
 // Import the Hooks used to create, remember, and clean up the map.
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+// Import the MapLibre library that renders the interactive map.
 import * as maplibregl from 'maplibre-gl'
+// Import MapLibre's required control, popup, and canvas styles.
 import 'maplibre-gl/dist/maplibre-gl.css'
 // CLASS 5: Import the Overpass query and readable category labels.
 import {
   ACCESSIBILITY_CATEGORY_LABELS,
   getAccessibilityFeatures,
 } from '../services/overpass'
+// CLASS 6: Import the pure calculation that turns OSM evidence into a score.
+import { calculateAccessibilityScore } from '../services/accessbilityScore'
+// CLASS 6: Import the visual score, coverage, barrier, and risk summary.
+import AccessibilityScoreCard from './AccessibilityScoreCard'
+
 
 // Define a simple MapLibre style that uses OpenStreetMap raster tiles.
 const MAP_STYLE = {
@@ -192,6 +199,21 @@ function MapView({ points, route }) {
       ).length,
     }),
     {},
+  )
+  // CLASS 6: Combine explicit barriers and steps for the risk-map shortcut.
+  const activeCategoryCount =
+    activeCategory === 'risk'
+      ? categoryCounts.barrier + categoryCounts.steps
+      : categoryCounts[activeCategory]
+  // CLASS 6: Give the combined risk filter a readable summary label.
+  const activeCategoryLabel =
+    activeCategory === 'risk'
+      ? 'Barrier and steps'
+      : ACCESSIBILITY_CATEGORY_LABELS[activeCategory]
+  // CLASS 6: Recalculate only when the current route's facility data changes.
+  const accessibilityScore = useMemo(
+    () => calculateAccessibilityScore(accessibilityData.features),
+    [accessibilityData],
   )
 
   // Reveal the detail section appended at the sidebar's bottom after a map click.
@@ -524,13 +546,29 @@ function MapView({ points, route }) {
         data: accessibilityData,
       })
 
+      // CLASS 6: Select both explicit barriers and steps for the risk shortcut.
+      const activeFilter =
+        activeCategory === 'risk'
+          ? [
+              'any',
+              ['==', ['get', 'category'], 'barrier'],
+              ['==', ['get', 'category'], 'steps'],
+            ]
+          : ['==', ['get', 'category'], activeCategory]
+
+      // CLASS 6: Use the red risk color for the combined barrier selection.
+      const activeColor =
+        activeCategory === 'risk'
+          ? ACCESSIBILITY_COLORS.barrier
+          : ACCESSIBILITY_COLORS[activeCategory]
+
       // Place a large translucent halo behind the category selected in the legend.
       if (activeCategory) {
         map.addLayer({
           id: ACCESSIBILITY_HIGHLIGHT_LAYER_ID,
           type: 'circle',
           source: ACCESSIBILITY_SOURCE_ID,
-          filter: ['==', ['get', 'category'], activeCategory],
+          filter: activeFilter,
           paint: {
             'circle-radius': [
               'interpolate',
@@ -541,9 +579,9 @@ function MapView({ points, route }) {
               17,
               17,
             ],
-            'circle-color': ACCESSIBILITY_COLORS[activeCategory],
+            'circle-color': activeColor,
             'circle-opacity': 0.24,
-            'circle-stroke-color': ACCESSIBILITY_COLORS[activeCategory],
+            'circle-stroke-color': activeColor,
             'circle-stroke-width': 2,
           },
         })
@@ -563,14 +601,14 @@ function MapView({ points, route }) {
                 12,
                 [
                   'case',
-                  ['==', ['get', 'category'], activeCategory],
+                  activeFilter,
                   7,
                   4,
                 ],
                 17,
                 [
                   'case',
-                  ['==', ['get', 'category'], activeCategory],
+                  activeFilter,
                   12,
                   4,
                 ],
@@ -595,7 +633,7 @@ function MapView({ points, route }) {
           'circle-stroke-width': activeCategory
             ? [
                 'case',
-                ['==', ['get', 'category'], activeCategory],
+                activeFilter,
                 3,
                 1,
               ]
@@ -603,7 +641,7 @@ function MapView({ points, route }) {
           'circle-opacity': activeCategory
             ? [
                 'case',
-                ['==', ['get', 'category'], activeCategory],
+                activeFilter,
                 1,
                 0.16,
               ]
@@ -802,12 +840,20 @@ function MapView({ points, route }) {
             </div>
             {activeCategory && (
               <p className="facility-filter-summary" role="status">
-                Highlighting {categoryCounts[activeCategory]}{' '}
-                {ACCESSIBILITY_CATEGORY_LABELS[activeCategory].toLowerCase()}{' '}
-                features. Select the same type again to reset.
+                Highlighting {activeCategoryCount}{' '}
+                {activeCategoryLabel.toLowerCase()} features.{' '}
+                Select Show all to reset.
               </p>
             )}
           </div>
+
+          {/* ================= CLASS 6: ACCESSIBILITY SCORING =============== */}
+          {/* Calculate and explain the result from the Class 5 facility data. */}
+          <AccessibilityScoreCard
+            result={accessibilityScore}
+            status={displayedAccessibilityStatus}
+            onSelectBarriers={() => setActiveCategory('risk')}
+          />
 
           {/* CLASS 5: Append the selected marker details at this sidebar's end. */}
           {selectedFacility && route && (
@@ -835,4 +881,5 @@ function MapView({ points, route }) {
   )
 }
 
+// Export MapView so App.jsx can render it.
 export default MapView

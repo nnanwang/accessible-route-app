@@ -661,6 +661,489 @@ button {
   line-height: 1.35;
 }
 
+/* ==================== CLASS 6: ACCESSIBILITY SCORING ==================== */
+/* Separate the scoring lesson from the Class 5 facility filter above it. */
+.score-card {
+  display: grid;
+  gap: 12px;
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid #dbe9e6;
+}
+
+/* Keep the scoring title and current risk indicator on one row. */
+.score-card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Give the Class 6 section a compact heading suitable for the sidebar. */
+.score-card-heading h3 {
+  margin: 4px 0 0;
+  color: #173f3a;
+  font-size: 1rem;
+}
+
+/* Present the derived risk as a strongly colored visual indicator. */
+.risk-badge {
+  flex: 0 0 auto;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 0.64rem;
+  font-weight: 900;
+}
+
+/* Reuse green for a well-supported low-risk result. */
+.risk-badge.risk-low {
+  color: #08705e;
+  background: #dff5ef;
+}
+
+/* Reuse amber for a result that contains concerns. */
+.risk-badge.risk-moderate {
+  color: #8a5700;
+  background: #fff0cc;
+}
+
+/* Reuse red for a result with multiple or strongly weighted barriers. */
+.risk-badge.risk-high {
+  color: #9a2f3d;
+  background: #ffe2e7;
+}
+
+/* Use neutral styling when coverage cannot support a risk conclusion. */
+.risk-badge.risk-unknown {
+  color: #586c69;
+  background: #e9f0ef;
+}
+
+/* Explain why no score is shown before data is ready. */
+.score-empty-state {
+  margin: 0;
+  padding: 11px;
+  border-radius: 9px;
+  color: #667b78;
+  background: #f2f7f6;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+/* Place the score ring beside the two supporting metrics. */
+.score-overview {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+}
+
+/* Draw a compact circular meter using the numeric CSS variable from React. */
+.score-ring {
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-content: center;
+  border-radius: 50%;
+  color: #0d746c;
+  background:
+    radial-gradient(circle, #ffffff 59%, transparent 61%),
+    conic-gradient(#13b8a2 var(--score-progress), #e1ecea 0);
+  text-align: center;
+}
+
+/* Switch the meter color when the result indicates moderate risk. */
+.score-ring.risk-moderate {
+  background:
+    radial-gradient(circle, #ffffff 59%, transparent 61%),
+    conic-gradient(#e09b2d var(--score-progress), #e1ecea 0);
+}
+
+/* Switch the meter color when the result indicates high risk. */
+.score-ring.risk-high {
+  background:
+    radial-gradient(circle, #ffffff 59%, transparent 61%),
+    conic-gradient(#d1495b var(--score-progress), #e1ecea 0);
+}
+
+/* Use a neutral ring when the available evidence is insufficient. */
+.score-ring.risk-unknown {
+  background:
+    radial-gradient(circle, #ffffff 59%, transparent 61%),
+    conic-gradient(#82928f var(--score-progress), #e1ecea 0);
+}
+
+/* Make the score the strongest number in the Class 6 panel. */
+.score-ring strong {
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+/* Keep the score denominator visually secondary. */
+.score-ring span {
+  margin-top: 3px;
+  color: #718783;
+  font-size: 0.62rem;
+}
+
+/* Stack data coverage and barrier count beside the ring. */
+.score-metrics {
+  display: grid;
+  gap: 7px;
+}
+
+/* Give each supporting metric its own readable row. */
+.score-metrics > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f2f8f7;
+}
+
+/* Keep metric labels quieter than their values. */
+.score-metrics span {
+  color: #607773;
+  font-size: 0.68rem;
+}
+
+/* Emphasize the coverage percentage and barrier count. */
+.score-metrics strong {
+  color: #173f3a;
+  font-size: 0.86rem;
+}
+
+/* Draw a full-width track for the independent coverage calculation. */
+.coverage-track {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e3ecea;
+}
+
+/* Fill the coverage track using the percentage supplied by React. */
+.coverage-track span {
+  height: 100%;
+  display: block;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #8f42ed, #13b8a2);
+}
+
+/* Present the plain-language explanation as a separate teaching block. */
+.score-explanation {
+  margin: 0;
+  color: #526d68;
+  font-size: 0.72rem;
+  line-height: 1.48;
+}
+
+/* Separate the barrier list from the score explanation above it. */
+.barrier-detection {
+  padding: 10px;
+  border: 1px solid #f0d5d9;
+  border-radius: 10px;
+  background: #fff8f9;
+}
+
+/* Keep the barrier title and map action aligned. */
+.barrier-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #7f3440;
+  font-size: 0.7rem;
+}
+
+/* Make the map-highlighting action compact and discoverable. */
+.barrier-heading button {
+  padding: 4px 7px;
+  border: 1px solid #e6abb4;
+  border-radius: 7px;
+  color: #9a2f3d;
+  background: #ffffff;
+  font-size: 0.61rem;
+  font-weight: 850;
+}
+
+/* Remove default list spacing from the detected barrier summary. */
+.barrier-detection ul {
+  display: grid;
+  gap: 6px;
+  padding: 0;
+  margin: 9px 0 0;
+  list-style: none;
+}
+
+/* Align each warning icon with the barrier name and category. */
+.barrier-detection li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+}
+
+/* Draw a compact red warning icon without another icon dependency. */
+.barrier-detection li > span {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: #d1495b;
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+
+/* Stack the barrier name and normalized category. */
+.barrier-detection li strong,
+.barrier-detection li small {
+  display: block;
+}
+
+/* Keep long OSM names inside the sidebar width. */
+.barrier-detection li strong {
+  overflow: hidden;
+  color: #62323a;
+  font-size: 0.68rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Make the barrier category readable but visually secondary. */
+.barrier-detection li small {
+  margin-top: 1px;
+  color: #91636a;
+  font-size: 0.6rem;
+}
+
+/* Style the no-barrier result without implying a safety guarantee. */
+.barrier-detection > p {
+  margin: 8px 0 0;
+  color: #637773;
+  font-size: 0.67rem;
+}
+
+/* Keep the safety limitation visible at the end of the scoring section. */
+.score-disclaimer {
+  margin: 0;
+  color: #7a8d8a;
+  font-size: 0.61rem;
+  font-style: italic;
+  line-height: 1.4;
+}
+/* ======================================================================= */
+
+/* ==================== CLASS 7: AI ACCESSIBILITY ASSISTANT ============== */
+/* Separate the AI lesson from the deterministic Class 6 score above it. */
+.ai-assistant {
+  display: grid;
+  gap: 11px;
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid #dbe9e6;
+}
+
+/* Keep the AI title and compact identifier on the same row. */
+.ai-assistant-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Match the AI title scale to the existing score-card heading. */
+.ai-assistant-heading h3 {
+  margin: 4px 0 0;
+  color: #173f3a;
+  font-size: 1rem;
+}
+
+/* Draw a small purple badge that identifies generated content. */
+.ai-badge {
+  min-width: 30px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: #8f42ed;
+  text-align: center;
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+
+/* Explain the AI step without crowding the narrow information panel. */
+.ai-intro {
+  margin: 0;
+  color: #59716d;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+/* Stack the traveler-profile label above its select control. */
+.profile-field {
+  display: grid;
+  gap: 5px;
+  color: #46625e;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+/* Make the profile selector easy to use with pointer and keyboard. */
+.profile-field select {
+  width: 100%;
+  height: 39px;
+  padding: 0 10px;
+  border: 1px solid #b7dcd6;
+  border-radius: 9px;
+  outline: none;
+  color: #264b46;
+  background: #ffffff;
+}
+
+/* Provide a clear visible focus state for the profile selector. */
+.profile-field select:focus-visible {
+  border-color: #8f42ed;
+  box-shadow: 0 0 0 3px rgb(143 66 237 / 14%);
+}
+
+/* Style the main Class 7 action as a full-width purple button. */
+.generate-report-button {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 9px;
+  color: #ffffff;
+  background: #8f42ed;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+/* Make the available AI action visibly interactive. */
+.generate-report-button:hover:not(:disabled) {
+  background: #7934cc;
+}
+
+/* Communicate both unavailable evidence and in-progress requests. */
+.generate-report-button:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+/* Use a white spinner so loading remains visible on the purple button. */
+.generate-report-button .loading-spinner {
+  border-color: rgb(255 255 255 / 38%);
+  border-top-color: #ffffff;
+}
+
+/* Explain why the AI button is unavailable before route data is ready. */
+.ai-empty-state {
+  margin: 0;
+  color: #718783;
+  font-size: 0.67rem;
+  line-height: 1.4;
+}
+
+/* Present backend or provider failures in the existing error language. */
+.ai-error {
+  margin: 0;
+  padding: 9px 10px;
+  border: 1px solid #f2bdc5;
+  border-radius: 9px;
+  color: #9a2f3d;
+  background: #fff0f2;
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+/* Group the generated answer so users can distinguish it from source data. */
+.ai-report {
+  display: grid;
+  gap: 11px;
+  padding: 12px;
+  border: 1px solid #d9c3f6;
+  border-radius: 11px;
+  color: #345450;
+  background: linear-gradient(145deg, #fbf8ff, #f1fbf9);
+}
+
+/* Align the report heading with its source-mode label. */
+.ai-report-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #5d269f;
+  font-size: 0.72rem;
+}
+
+/* Make demo output impossible to confuse with a real API response. */
+.ai-report-label-row span {
+  color: #6b7f7c;
+  font-size: 0.6rem;
+  font-weight: 750;
+}
+
+/* Normalize paragraph spacing and readability inside the generated report. */
+.ai-report p {
+  margin: 0;
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+/* Separate each structured report section with a subtle rule. */
+.ai-report-block {
+  padding-top: 9px;
+  border-top: 1px solid rgb(143 66 237 / 12%);
+}
+
+/* Keep report subheadings clear but compact. */
+.ai-report-block h4 {
+  margin: 0 0 5px;
+  color: #214b46;
+  font-size: 0.7rem;
+}
+
+/* Use modest list spacing for quick scanning in the map sidebar. */
+.ai-report-block ul {
+  display: grid;
+  gap: 5px;
+  padding-left: 17px;
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.42;
+}
+
+/* Make the safety limitation visually distinct from recommendations. */
+.ai-safety-notice {
+  padding: 9px;
+  border-radius: 8px;
+  color: #7f3440;
+  background: #fff0f2;
+}
+
+/* Keep the confidence caveat visible without overpowering the report. */
+.ai-confidence-note {
+  color: #718783;
+  font-style: italic;
+}
+
+/* Reinforce the secure browser-to-server architecture below the demo. */
+.ai-architecture-note {
+  margin: 0;
+  color: #637975;
+  font-size: 0.62rem;
+  font-weight: 750;
+  line-height: 1.4;
+}
+/* ======================================================================= */
+
 /* Stack the accessible name, category, and raw tag inside facility popups. */
 .accessibility-popup strong,
 .accessibility-popup span,
