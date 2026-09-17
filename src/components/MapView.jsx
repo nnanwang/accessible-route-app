@@ -10,10 +10,11 @@ import {
   getAccessibilityFeatures,
 } from '../services/overpass'
 // CLASS 6: Import the pure calculation that turns OSM evidence into a score.
-import { calculateAccessibilityScore } from '../services/accessbilityScore'
+import { calculateAccessibilityScore } from '../services/accessibilityScore'
 // CLASS 6: Import the visual score, coverage, barrier, and risk summary.
-import AccessibilityScoreCard from './AccessibilityScoreCard'
-
+import AccessibilityScoreCard from '../services/accessbilityScore'
+// CLASS 8: Import the live AI report interface shown after the score card.
+import AIAccessibilityAssistant from './AIAccessibilityAssistant'
 
 // Define a simple MapLibre style that uses OpenStreetMap raster tiles.
 const MAP_STYLE = {
@@ -854,6 +855,24 @@ function MapView({ points, route }) {
             status={displayedAccessibilityStatus}
             onSelectBarriers={() => setActiveCategory('risk')}
           />
+
+          {/* ================= CLASS 8: LIVE OPENAI ASSISTANT =============== */}
+          {/* Send the same route evidence to a protected backend for explanation. */}
+          {/* The key remounts the assistant when the route or evidence changes. */}
+          {/* route supplies names and metrics; score stays deterministic. */}
+          {/* features supplies normalized OSM evidence; status gates the button. */}
+          <AIAccessibilityAssistant
+            key={
+              route
+                ? `${route.start.name}-${route.destination.name}-${route.distanceMeters}-${accessibilityData.features.length}`
+                : 'no-route'
+            }
+            route={route}
+            score={accessibilityScore}
+            features={accessibilityData.features}
+            status={displayedAccessibilityStatus}
+          />
+          {/* ================================================================= */}
 
           {/* CLASS 5: Append the selected marker details at this sidebar's end. */}
           {selectedFacility && route && (

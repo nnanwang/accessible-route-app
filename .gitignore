@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# CLASS 8: Never commit local API keys or other environment secrets.
+.env
+.env.*

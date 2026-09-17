@@ -937,7 +937,7 @@ button {
 }
 /* ======================================================================= */
 
-/* ==================== CLASS 7: AI ACCESSIBILITY ASSISTANT ============== */
+/* ==================== CLASS 8: LIVE AI ACCESSIBILITY ASSISTANT ========= */
 /* Separate the AI lesson from the deterministic Class 6 score above it. */
 .ai-assistant {
   display: grid;
@@ -1009,7 +1009,7 @@ button {
   box-shadow: 0 0 0 3px rgb(143 66 237 / 14%);
 }
 
-/* Style the main Class 7 action as a full-width purple button. */
+/* Style the main Class 8 action as a full-width purple button. */
 .generate-report-button {
   min-height: 42px;
   display: inline-flex;

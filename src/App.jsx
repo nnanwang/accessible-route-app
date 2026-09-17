@@ -1,22 +1,26 @@
 import { useState } from 'react'
 import MapView from './components/MapView'
+// Import the route search component that owns all search and routing logic.
 import RouteSearch from './components/RouteSearch'
 
 // Store the example markers shown before the user generates a route.
 const points = [
   {
+    // Give React and MapLibre a stable identifier for this marker.
     id: 'grand-central',
     name: 'Grand Central Terminal',
     coordinates: [-73.9772, 40.7527],
     color: '#9b4dff',
   },
   {
+    // Give this marker its own stable identifier.
     id: 'bryant-park',
     name: 'Bryant Park',
     coordinates: [-73.9832, 40.7536],
     color: '#13b8a2',
   },
   {
+    // Give this marker its own stable identifier.
     id: 'empire-state',
     name: 'Empire State Building',
     coordinates: [-73.9857, 40.7484],
@@ -38,12 +42,15 @@ function App() {
 
         <div>
           <p className="eyebrow">ACCESSIBLE MAP STUDIO</p>
-          <h1>Route Evaluation Framework</h1>
+          {/* CLASS 8: Update the app heading to match the live AI lesson. */}
+          <h1>AI Accessibility Assistant</h1>
+          {/* CLASS 8: Tell students which new layer this version demonstrates. */}
           <p className="subtitle">
-            Class 5 · OpenStreetMap accessibility data and Overpass API
+            Class 8 · Live OpenAI reports from route evidence
           </p>
         </div>
-        <span className="class-pill">Class 5 update</span>
+        {/* CLASS 8: Keep the lesson label visible during the live demo. */}
+        <span className="class-pill">Class 8 API</span>
       </header>
 
       <main className="app-layout">
@@ -56,4 +63,6 @@ function App() {
   )
 }
 
+// Export App so main.jsx can render it.
 export default App
+
