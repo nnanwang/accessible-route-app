@@ -26,8 +26,9 @@ function AccessibilityScoreCard({ result, status, onSelectBarriers }) {
     <section className="score-card" aria-labelledby="score-card-title">
       <div className="score-card-heading">
         <div>
-          <p className="eyebrow">CLASS 6 · ACCESSIBILITY SCORING</p>
-          <h3 id="score-card-title">Route evidence score</h3>
+          {/* CLASS 9: Replace the class label with a traveler-facing section name. */}
+          <p className="eyebrow">ROUTE ACCESSIBILITY</p>
+          <h3 id="score-card-title">Accessibility overview</h3>
         </div>
 
         <span className={`risk-badge risk-${result.riskLevel}`}>
@@ -37,7 +38,8 @@ function AccessibilityScoreCard({ result, status, onSelectBarriers }) {
 
       {!isReady ? (
         <p className="score-empty-state">
-          Generate a route and wait for OpenStreetMap data to calculate the score.
+          Search for a route and wait for accessibility data to calculate the
+          score.
         </p>
       ) : (
         <>
@@ -101,8 +103,9 @@ function AccessibilityScoreCard({ result, status, onSelectBarriers }) {
             )}
           </div>
 
+          {/* CLASS 9: Present the limitation as a concise product disclaimer. */}
           <p className="score-disclaimer">
-            Teaching estimate only — it is not a guarantee of route safety.
+            Based on available mapped data — conditions may differ in person.
           </p>
         </>
       )}
@@ -110,4 +113,6 @@ function AccessibilityScoreCard({ result, status, onSelectBarriers }) {
   )
 }
 
+// Export the component so MapView can place it beside the map.
 export default AccessibilityScoreCard
+// =======================================================================

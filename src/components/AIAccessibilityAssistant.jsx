@@ -1,14 +1,19 @@
-import { useState } from "react";
-import { generateAccessibilityReport } from "../services/openai";
+// Import the Hook used for traveler choices, request state, and report data.
+import { useState } from 'react'
+// Import the browser-side service that calls our protected backend endpoint.
+import { generateAccessibilityReport } from '../services/openai'
 
+// ==================== CLASS 8: LIVE AI ACCESSIBILITY ASSISTANT ====================
+// Offer a few simple profiles so recommendations can respond to user needs.
 const TRAVELER_PROFILES = [
   { value: 'wheelchair-user', label: 'Wheelchair user' },
   { value: 'limited-mobility', label: 'Limited mobility' },
   { value: 'low-vision', label: 'Low vision' },
 ]
 
+// Display AI-generated explanation, recommendations, reminders, and cautions.
 function AIAccessibilityAssistant({ route, score, features, status }) {
-
+  // Store the selected traveler profile used to personalize the prompt.
   const [travelerProfile, setTravelerProfile] = useState('wheelchair-user')
   // Store the structured report returned by the local backend.
   const [report, setReport] = useState(null)
@@ -17,11 +22,13 @@ function AIAccessibilityAssistant({ route, score, features, status }) {
   // Store a user-friendly error separately from the report data.
   const [error, setError] = useState('')
   // Remember whether the backend used OpenAI or the no-key classroom demo.
-    const [responseMode, setResponseMode] = useState('')
-    
-      const canGenerate = Boolean(route) && status === 'success'
+  const [responseMode, setResponseMode] = useState('')
 
-async function handleGenerate() {
+  // Enable generation only after the route and OSM query are complete.
+  const canGenerate = Boolean(route) && status === 'success'
+
+  // Generate a new report when the user presses the Class 8 action button.
+  async function handleGenerate() {
     // Stop when required route evidence is not ready yet.
     if (!canGenerate) {
       return
@@ -58,21 +65,26 @@ async function handleGenerate() {
         setReportStatus('error')
       }
     }
-}
-    
-    return (
-        <section className="ai-assistant" aria-labelledby="ai-assistant-title">
+  }
+
+  // Return the complete Class 8 teaching section.
+  return (
+    // CLASS 8: Give the complete assistant region an accessible heading.
+    <section className="ai-assistant" aria-labelledby="ai-assistant-title">
       {/* CLASS 8: Identify the feature as an AI-generated report. */}
       <div className="ai-assistant-heading">
         <div>
-          <p className="eyebrow">CLASS 8 · LIVE OPENAI API</p>
-          <h3 id="ai-assistant-title">AI accessibility assistant</h3>
+          {/* CLASS 9: Replace the API lesson label with a user benefit. */}
+          <p className="eyebrow">PERSONALIZED GUIDANCE</p>
+          <h3 id="ai-assistant-title">Route guidance</h3>
         </div>
         <span className="ai-badge">AI</span>
       </div>
 
+      {/* CLASS 9: Explain the feature without naming internal data pipelines. */}
       <p className="ai-intro">
-        Turn the calculated score and OSM evidence into a readable route brief.
+        Get a plain-language summary based on the route score and mapped
+        accessibility information.
       </p>
 
       {/* CLASS 8: Let the same evidence be explained for different needs. */}
@@ -107,21 +119,22 @@ async function handleGenerate() {
         disabled={!canGenerate || reportStatus === 'loading'}
         onClick={handleGenerate}
       >
-        {/* Swap the button content while the request is running. */}
+        {/* CLASS 9: Use guidance language instead of report/API terminology. */}
         {reportStatus === 'loading' ? (
           <>
             <span className="loading-spinner" aria-hidden="true" />
-            Generating report…
+            Preparing guidance…
           </>
         ) : (
-          'Generate AI report'
+          'Generate route guidance'
         )}
       </button>
 
       {/* CLASS 8: Explain why the action is disabled before evidence is ready. */}
       {!canGenerate && (
         <p className="ai-empty-state">
-          Generate a route and wait for OSM evidence before requesting a report.
+          Search for a route and wait for accessibility information before
+          generating guidance.
         </p>
       )}
 
@@ -135,11 +148,13 @@ async function handleGenerate() {
       {/* CLASS 8: Render the schema-constrained report only after success. */}
       {report && (
         <article className="ai-report" aria-live="polite">
-          {/* Show whether this report came from demo mode or the real API. */}
+          {/* CLASS 9: Label generated content without exposing provider details. */}
           <div className="ai-report-label-row">
-            <strong>Route brief</strong>
+            <strong>Route guidance</strong>
             <span>
-              {responseMode === 'demo' ? 'Offline demo' : 'Live OpenAI response'}
+              {responseMode === 'demo'
+                ? 'Sample guidance'
+                : 'AI-generated guidance'}
             </span>
           </div>
 
@@ -181,14 +196,14 @@ async function handleGenerate() {
         </article>
       )}
 
-      {/* CLASS 8: Reinforce the secure architecture below the live demo. */}
+      {/* CLASS 9: Replace the developer architecture note with a data-source note. */}
       <p className="ai-architecture-note">
-        React → local backend → OpenAI. The API key stays on the server.
+        Based on the route score and available mapped accessibility data.
       </p>
     </section>
   )
 }
 
-export default AIAccessibilityAssistant;
-
-    
+// Export the component so MapView can place it below the score card.
+export default AIAccessibilityAssistant
+// ===========================================================================

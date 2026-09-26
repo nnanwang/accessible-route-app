@@ -124,6 +124,7 @@ button {
   overflow: hidden;
 }
 
+/* ==================== CLASS 9: UI REFINEMENT ============================= */
 /* Float the search workflow above the upper-left area of the map. */
 .search-panel {
   position: absolute;
@@ -131,7 +132,8 @@ button {
   top: 18px;
   left: 18px;
   width: min(430px, calc(100% - 36px));
-  max-height: 42vh;
+  /* CLASS 9: Use available map height so desktop results do not need scrolling. */
+  max-height: calc(100% - 36px);
   overflow-y: auto;
   display: grid;
   grid-template-columns: 1fr;
@@ -325,25 +327,29 @@ button {
   grid-column: 1 / -1;
 }
 
-/* Arrange the distance, duration, and coordinate results in one row. */
+/* CLASS 9: Present all route results inside one compact card. */
 .route-summary {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-/* Give the long coordinate result the complete overlay width. */
-.coordinate-summary {
-  grid-column: 1 / -1;
-}
-
-/* Give every route result group a consistent card treatment. */
-.route-metric,
-.coordinate-summary {
+  gap: 8px;
   padding: 10px 12px;
   border: 1px solid #d8e6e3;
   border-radius: 10px;
   background: #ffffff;
+}
+
+/* Keep distance and duration visible together without increasing panel height. */
+.route-summary-primary {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Separate the two related metrics with a quiet vertical rule. */
+.route-summary-divider {
+  width: 1px;
+  height: 32px;
+  background: #d8e6e3;
 }
 
 /* Stack each route metric label above its value. */
@@ -366,20 +372,34 @@ button {
   font-size: 1.08rem;
 }
 
-/* Let both coordinate labels wrap naturally in the available space. */
+/* CLASS 9: Hide technical coordinates until a user chooses to inspect them. */
 .coordinate-summary {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 5px 18px;
+  padding-top: 7px;
+  border-top: 1px solid #e5efed;
   color: #5d736f;
   font-size: 0.72rem;
 }
 
-/* Emphasize the coordinate labels without overpowering their values. */
-.coordinate-summary b {
+/* Make the disclosure look actionable without resembling a primary button. */
+.coordinate-summary summary {
+  width: fit-content;
+  cursor: pointer;
+  color: #0d746c;
+  font-weight: 800;
+}
+
+/* Add breathing room only after the coordinate disclosure is opened. */
+.coordinate-summary-content {
+  display: grid;
+  gap: 4px;
+  margin-top: 7px;
+}
+
+/* Emphasize each coordinate endpoint without overpowering its value. */
+.coordinate-summary-content b {
   color: #324e4b;
 }
+/* ======================================================================= */
 
 /* ==================== CLASS 4: REQUEST FEEDBACK ==================== */
 /* Give loading and error messages the same easy-to-scan structure. */

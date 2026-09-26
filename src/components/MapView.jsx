@@ -12,7 +12,7 @@ import {
 // CLASS 6: Import the pure calculation that turns OSM evidence into a score.
 import { calculateAccessibilityScore } from '../services/accessibilityScore'
 // CLASS 6: Import the visual score, coverage, barrier, and risk summary.
-import AccessibilityScoreCard from '../services/accessbilityScore'
+import AccessibilityScoreCard from './AccessibilityScoreCard'
 // CLASS 8: Import the live AI report interface shown after the score card.
 import AIAccessibilityAssistant from './AIAccessibilityAssistant'
 
@@ -738,10 +738,10 @@ function MapView({ points, route }) {
         >
           {/* Put the title and close control on the first row of the overlay. */}
           <div className="map-card-header">
-            {/* Group the MapLibre label and changing map title. */}
+            {/* CLASS 9: Replace the MapLibre component label with user language. */}
             <div>
-              <p className="eyebrow">MAPLIBRE VIEW</p>
-              <h2>{route ? 'Walking route' : 'Interactive map'}</h2>
+              <p className="eyebrow">ROUTE MAP</p>
+              <h2>{route ? 'Your walking route' : 'Explore the map'}</h2>
             </div>
 
             {/* Remove the complete information overlay without hiding the map. */}
@@ -760,18 +760,18 @@ function MapView({ points, route }) {
           <p className="map-interaction-hint">
             {route
               ? 'Start · route · destination'
-              : 'Pan · zoom · select a marker'}
+              : 'Pan · zoom · select a location'}
           </p>
 
           {/* ================= CLASS 5: OSM ACCESSIBILITY PANEL ============= */}
           {/* Explain the data source, legend, and current Overpass status. */}
           <div className="accessibility-panel">
-            {/* Introduce OpenStreetMap as tagged data, not only map tiles. */}
+            {/* CLASS 9: Hide API names and describe what users can explore. */}
             <div className="accessibility-intro">
-              <p className="eyebrow">OPENSTREETMAP + OVERPASS API</p>
+              <p className="eyebrow">ACCESSIBILITY FEATURES</p>
               <p>
-                Query wheelchair, steps, elevator, ramp, tactile paving, and
-                kerb tags near the route.
+                Explore mapped wheelchair access, steps, elevators, ramps,
+                tactile paving, and kerb information near the route.
               </p>
             </div>
 
@@ -823,7 +823,7 @@ function MapView({ points, route }) {
               )}
             </ul>
 
-            {/* Announce loading, success, empty data, or errors accessibly. */}
+            {/* CLASS 9: Express request states as user tasks, not API operations. */}
             <div
               className={`accessibility-query-status status-${displayedAccessibilityStatus}`}
               role={
@@ -832,16 +832,17 @@ function MapView({ points, route }) {
               aria-live="polite"
             >
               {displayedAccessibilityStatus === 'idle' &&
-                'Generate a route to query nearby accessibility tags.'}
+                'Search for a route to explore nearby accessibility features.'}
               {displayedAccessibilityStatus === 'loading' &&
-                'Querying OpenStreetMap accessibility data…'}
+                'Loading nearby accessibility information…'}
               {displayedAccessibilityStatus === 'success' &&
-                `${displayedFeatureCount} tagged features found near this route.`}
+                `${displayedFeatureCount} mapped accessibility features found near this route.`}
               {displayedAccessibilityStatus === 'error' && accessibilityError}
             </div>
             {activeCategory && (
+              /* CLASS 9: Describe the visible result instead of internal highlighting. */
               <p className="facility-filter-summary" role="status">
-                Highlighting {activeCategoryCount}{' '}
+                Showing {activeCategoryCount}{' '}
                 {activeCategoryLabel.toLowerCase()} features.{' '}
                 Select Show all to reset.
               </p>

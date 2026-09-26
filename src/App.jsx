@@ -36,21 +36,24 @@ function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
+        {/* ================= CLASS 9: USER-FACING PRODUCT HEADER ============ */}
+        {/* Replace classroom labels with a product name and task-focused copy. */}
         <div className="brand-mark" aria-hidden="true">
-          AM
+          AR
         </div>
 
         <div>
-          <p className="eyebrow">ACCESSIBLE MAP STUDIO</p>
-          {/* CLASS 8: Update the app heading to match the live AI lesson. */}
-          <h1>AI Accessibility Assistant</h1>
-          {/* CLASS 8: Tell students which new layer this version demonstrates. */}
+          <p className="eyebrow">ACCESSIBLE ROUTE GUIDE</p>
+          {/* CLASS 9: Name the complete experience instead of one component. */}
+          <h1>Accessible Route Explorer</h1>
+          {/* CLASS 9: Describe the user benefit instead of the lesson number. */}
           <p className="subtitle">
-            Class 8 · Live OpenAI reports from route evidence
+            Explore mapped accessibility features and personalized guidance
           </p>
         </div>
-        {/* CLASS 8: Keep the lesson label visible during the live demo. */}
-        <span className="class-pill">Class 8 API</span>
+        {/* CLASS 9: Replace the Class 8 badge with a feature-oriented label. */}
+        <span className="class-pill">Route insights</span>
+        {/* ================================================================= */}
       </header>
 
       <main className="app-layout">
@@ -65,4 +68,3 @@ function App() {
 
 // Export App so main.jsx can render it.
 export default App
-
