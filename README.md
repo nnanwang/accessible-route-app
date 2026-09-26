@@ -6,6 +6,31 @@ The project explores an important design question: **How can a digital map commu
 
 Rather than claiming that a route is fully accessible, the application shows the available evidence, explains how the score was calculated, highlights possible barriers, and clearly communicates uncertainty.
 
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Key Features](#key-features)
+  - [Address Search and Route Generation](#address-search-and-route-generation)
+  - [Interactive Map](#interactive-map)
+  - [Accessibility Evidence](#accessibility-evidence)
+  - [Explainable Accessibility Score](#explainable-accessibility-score)
+  - [AI Route Guidance](#ai-route-guidance)
+- [User Journey](#user-journey)
+- [System Architecture](#system-architecture)
+- [Accessibility Scoring Method](#accessibility-scoring-method)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Available Commands](#available-commands)
+- [Accessibility and Inclusive Design](#accessibility-and-inclusive-design)
+- [Responsible AI Design](#responsible-ai-design)
+- [Data and Safety Limitations](#data-and-safety-limitations)
+- [Engineering Highlights](#engineering-highlights)
+- [Challenges and Learning](#challenges-and-learning)
+- [Future Development](#future-development)
+- [Acknowledgements](#acknowledgements)
+- [Project Status](#project-status)
+
 ## Project Overview
 
 Many navigation tools optimize for speed or distance, but a short route may still contain steps, limited wheelchair access, inaccessible entrances, or missing accessibility information. Accessible Route Explorer was created to make those factors easier to inspect before a journey.
@@ -22,6 +47,8 @@ Users can:
 
 This is an educational and portfolio prototype, not a real-time navigation or safety-guarantee system.
 
+![Accessible Route Explorer interface showing the route map and information panels](src/assets/image/homepage.png)
+
 ## Key Features
 
 ### Address Search and Route Generation
@@ -30,6 +57,8 @@ This is an educational and portfolio prototype, not a real-time navigation or sa
 - Conversion of human-readable addresses into longitude and latitude.
 - Walking-route geometry, distance, and estimated duration from an OpenStreetMap routing service.
 - Clear loading, empty, success, and error states.
+
+![Address search and walking-route generation demonstration](src/assets/image/routeSearch.gif)
 
 ### Interactive Map
 
@@ -47,6 +76,8 @@ This is an educational and portfolio prototype, not a real-time navigation or sa
 - Map highlighting for a selected facility category or detected barriers.
 - Explicit treatment of missing tags as **unknown information**, not proof of inaccessibility.
 
+![Accessibility facility filtering and map highlighting demonstration](src/assets/image/facilitySearch.gif)
+
 ### Explainable Accessibility Score
 
 - Deterministic JavaScript calculation rather than an AI-generated score.
@@ -56,6 +87,8 @@ This is an educational and portfolio prototype, not a real-time navigation or sa
 - Stronger penalties for barriers and steps.
 - Human-readable risk labels and score explanations.
 
+![Accessibility score, coverage, and barrier detection demonstration](src/assets/image/scoreSystem.gif)
+
 ### AI Route Guidance
 
 - Traveler profiles for wheelchair users, people with limited mobility, and people with low vision.
@@ -63,6 +96,8 @@ This is an educational and portfolio prototype, not a real-time navigation or sa
 - Plain-language score explanation, personalized recommendations, travel reminders, and safety notices.
 - Protected local backend route that keeps the OpenAI API key out of browser code.
 - Honest demo mode for lessons or offline demonstrations without a live API request.
+
+![Personalized AI route guidance demonstration](src/assets/image/AI.gif)
 
 ## User Journey
 
